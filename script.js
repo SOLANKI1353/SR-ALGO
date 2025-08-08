@@ -38,6 +38,42 @@ document.addEventListener('DOMContentLoaded', () => {
         return (Math.random() * (max - min) + min).toFixed(2);
     }
 
+    // New function to simulate fetching live data from a real API
+    async function fetchLiveData() {
+        const apiKey = "YOUREHWH70HNB2HB7YJI"; // Replace with your actual API key
+        const niftyApiUrl = `https://api.example.com/live/nifty?apikey=${apiKey}`;
+        const sectorApiUrl = `https://api.example.com/live/sectors?apikey=${apiKey}`;
+
+        try {
+            // Fetch Nifty data
+            const niftyResponse = await fetch(niftyApiUrl);
+            const niftyResult = await niftyResponse.json();
+            // Assuming the API returns a number
+            const niftyValue = niftyResult.value;
+            niftyData.push(niftyValue.toFixed(2));
+            if (niftyData.length > 50) niftyData.shift();
+
+            // Fetch Sector data
+            const sectorResponse = await fetch(sectorApiUrl);
+            const sectorResult = await sectorResponse.json();
+            // Assuming the API returns an array of sector objects
+            sectorResult.sectors.forEach(s => {
+                const existingSector = sectorData.find(e => e.sector === s.name);
+                if (existingSector) {
+                    existingSector.value = s.value;
+                }
+            });
+
+            // Update charts after fetching
+            updateCharts();
+        } catch (error) {
+            console.error("Error fetching live data:", error);
+            // Fallback to mock data if API call fails
+            generateMockData();
+            updateCharts();
+        }
+    }
+
     function generateMockData() {
         // Nifty data simulation
         const lastValue = niftyData.length > 0 ? niftyData[niftyData.length - 1] : 17000;
@@ -74,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const toastContainer = document.getElementById('toast-container');
         const toast = document.createElement('div');
         let icon = '';
-        let bgColor = '';
         
         if (type === 'buy') {
             icon = 'fa-solid fa-arrow-up text-green-500';
@@ -230,8 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update data every 5 seconds
     setInterval(() => {
+        // You would uncomment this line and comment out generateMockData()
+        // fetchLiveData();
         generateMockData();
-        updateCharts();
     }, 5000);
 
     // Generate a new signal every 15 seconds
