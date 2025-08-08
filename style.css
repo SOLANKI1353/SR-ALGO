@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a; /* Tailwind's slate-900 */
+    color: #f8fafc; /* Tailwind's slate-50 */
+}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+}
+.card {
+    background: rgba(30, 41, 59, 0.6); /* Tailwind's slate-800 with transparency */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+}
+.toast {
+    display: flex;
+    align-items: center;
+    background-color: rgba(30, 41, 59, 0.9);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 0.75rem;
+    padding: 1rem;
+    border-left: 4px solid;
+    animation: slide-in 0.5s ease-out;
+}
+.toast.success { border-color: #10b981; }
+.toast.warning { border-color: #f59e0b; }
+.toast.danger { border-color: #ef4444; }
+.toast-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+.toast-content {
+    flex-grow: 1;
+}
+.toast-title {
+    font-weight: 600;
+}
+.toast-message {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+.toast-close {
+    cursor: pointer;
+    color: #94a3b8;
+}
+.chart-container {
+    position: relative;
+    height: 300px;
+}
