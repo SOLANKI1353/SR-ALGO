@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SR Algo Screener - Swing Reversal Stock Screener</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-50 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-800 bg-opacity-80 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-chart-line text-2xl text-indigo-500"></i>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-blue-500 text-transparent bg-clip-text">SR Algo Screener</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="nav-link text-slate-300 hover:text-white transition-colors duration-200">
+                        <i class="fa-solid fa-chart-area"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-link text-slate-300 hover:text-white transition-colors duration-200">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <input type="text" placeholder="Search stocks..." class="w-64 pl-10 pr-4 py-2 rounded-full bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                </div>
+                <button id="notification-btn" class="relative w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 hover:bg-indigo-500 hover:text-white transition-colors duration-200">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge" class="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center hidden"></span>
+                </button>
+                <button id="user-btn" class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">
+                    JD
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <div class="flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar -->
+            <aside class="w-full md:w-64 bg-slate-800 p-6 rounded-2xl shadow-lg h-fit hidden md:block">
+                <nav>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#" id="tab-dashboard" class="menu-link flex items-center space-x-3 p-3 rounded-xl bg-indigo-600 text-white font-medium">
+                                <i class="fa-solid fa-gauge"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="tab-screener" class="menu-link flex items-center space-x-3 p-3 rounded-xl text-slate-300 hover:bg-slate-700 hover:text-white transition-colors duration-200">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <span>Live Screener</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="tab-backtest" class="menu-link flex items-center space-x-3 p-3 rounded-xl text-slate-300 hover:bg-slate-700 hover:text-white transition-colors duration-200">
+                                <i class="fa-solid fa-flask"></i>
+                                <span>Backtesting</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="tab-simulator" class="menu-link flex items-center space-x-3 p-3 rounded-xl text-slate-300 hover:bg-slate-700 hover:text-white transition-colors duration-200">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Simulator</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Dashboard Content -->
+            <section class="flex-grow">
+
+                <!-- Dashboard Tab -->
+                <div id="content-dashboard" class="feature-content active">
+                    <h2 class="text-3xl font-bold mb-6">Market Overview</h2>
+                    <div class="dashboard-grid">
+                        <!-- Chart 1: Market Trends -->
+                        <div class="card p-6 rounded-2xl">
+                            <h3 class="text-xl font-semibold mb-4">NIFTY 50 Performance</h3>
+                            <div class="chart-container">
+                                <canvas id="niftyChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Chart 2: Sector Performance -->
+                        <div class="card p-6 rounded-2xl">
+                            <h3 class="text-xl font-semibold mb-4">Sector Performance</h3>
+                            <div class="chart-container">
+                                <canvas id="sectorChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Live Trading Signals -->
+                        <div class="card p-6 rounded-2xl col-span-full">
+                            <h3 class="text-xl font-semibold mb-4">Live Trading Signals</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-slate-700">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Symbol</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Signal</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Price</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="signal-table-body" class="divide-y divide-slate-700">
+                                        <!-- Signals will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Screener Tab -->
+                <div id="content-screener" class="feature-content hidden">
+                    <h2 class="text-3xl font-bold mb-6">Live Screener</h2>
+                    <div class="bg-slate-800 p-6 rounded-2xl shadow-lg">
+                        <p class="text-slate-300">This is where the live stock screening results would be displayed. You could add filters and a real-time data table here.</p>
+                    </div>
+                </div>
+
+                <!-- Backtesting Tab -->
+                <div id="content-backtest" class="feature-content hidden">
+                    <h2 class="text-3xl font-bold mb-6">Strategy Backtesting</h2>
+                    <div class="bg-slate-800 p-6 rounded-2xl shadow-lg">
+                        <p class="text-slate-300">This section is for backtesting trading strategies. You could have a form to define a strategy and a chart to display the results.</p>
+                    </div>
+                </div>
+
+                <!-- Simulator Tab -->
+                <div id="content-simulator" class="feature-content hidden">
+                    <h2 class="text-3xl font-bold mb-6">Trading Simulator</h2>
+                    <div class="bg-slate-800 p-6 rounded-2xl shadow-lg">
+                        <p class="text-slate-300">Here you can implement a virtual trading simulator where users can practice trading without real money.</p>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
