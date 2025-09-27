@@ -1,0 +1,52 @@
+
+/* UI fixes to improve responsiveness for profile/settings and mobile */
+.profile-menu, .settings-panel, .dropdown, .modal {
+  max-width: 100% !important;
+  width: auto !important;
+  box-sizing: border-box;
+  padding: 0.5rem !important;
+  z-index: 99999 !important;
+}
+
+/* Ensure modals and panels scroll on small screens */
+.modal, .settings-panel {
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+}
+
+/* Make header controls wrap on narrow viewports */
+.header-controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Make buttons and inputs larger on touch devices */
+@media (max-width: 768px) {
+  .profile-menu button, .settings-panel button, input {
+    padding: 12px 10px !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Ensure icons/icons buttons remain visible on Windows DPI scaling */
+.icon-btn {
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Live status banner */
+.live-status {
+  font-family: var(--font-inter, system-ui);
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  background: rgba(255,255,255,0.03);
+  color: var(--primary-foreground, #fff);
+  margin: 6px;
+}
