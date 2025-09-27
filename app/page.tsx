@@ -7,7 +7,11 @@ import { StockScreener } from "@/components/stock-screener"
 import { MarketHeatmap } from "@/components/market-heatmap"
 import { FiiDiiData } from "@/components/fii-dii-data"
 import { TradingTools } from "@/components/trading-tools"
+<<<<<<< HEAD
 import { AngelLogin } from "@/components/angel-login-fixed"
+=======
+import { AngelLogin } from "@/components/angel-login"
+>>>>>>> ee02208e6802b6d45fea51f8c286e01b8b6d364c
 import { angelAPI, type AngelCredentials } from "@/lib/angel-api"
 
 export default function HomePage() {

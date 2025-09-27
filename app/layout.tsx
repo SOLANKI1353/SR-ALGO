@@ -3,9 +3,13 @@ import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
+<<<<<<< HEAD
 import "./fixes.css"
 import { Suspense } from "react"
 import LiveStatus from "@/components/live-status"
+=======
+import { Suspense } from "react"
+>>>>>>> ee02208e6802b6d45fea51f8c286e01b8b6d364c
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,7 +39,10 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable} ${jetbrainsMono.variable} antialiased`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+<<<<<<< HEAD
             <LiveStatus/>
+=======
+>>>>>>> ee02208e6802b6d45fea51f8c286e01b8b6d364c
             {children}
           </ThemeProvider>
           {/* Analytics component removed */}
